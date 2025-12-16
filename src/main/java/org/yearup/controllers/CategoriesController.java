@@ -38,10 +38,11 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
-    public Category getById(@PathVariable int id)
+    @GetMapping("{categoryId}")
+    public Category getById(@PathVariable int categoryId)
     {
         // get the category by id
-        return null;
+        return categoryDao.getById(categoryId);
     }
 
     // the url to return all products in category 1 would look like this
