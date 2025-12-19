@@ -18,6 +18,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         super(dataSource);
     }
 
+    // method for querying for all categories
     @Override
     public List<Category> getAllCategories() {
         // get all categories
@@ -42,6 +43,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         return categories;
     }
 
+    // method for getting category by id
     @Override
     public Category getById(int categoryId) {
         // get category by id
@@ -70,6 +72,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         return output;
     }
 
+    // method for creating a new category
     @Override
     public Category create(Category category) {
         String sql = """
@@ -103,6 +106,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         return null;
     }
 
+    // method for updating a category
     @Override
     public void update(int categoryId, Category category) {
         // update category
@@ -127,6 +131,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 
     }
 
+    // method for deleting a category
     @Override
     public void delete(int categoryId) {
         // delete category
@@ -147,6 +152,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         }
     }
 
+    // method for mapping result sets
     private Category mapRow(ResultSet row) throws SQLException {
         int categoryId = row.getInt("category_id");
         String name = row.getString("name");
