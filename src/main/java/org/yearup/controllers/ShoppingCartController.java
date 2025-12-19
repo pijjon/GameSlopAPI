@@ -59,7 +59,7 @@ public class ShoppingCartController
         User user = userDao.getByUserName(userName);
         int userId = user.getId();
 
-        // use the shoppingcartDao to get all items in the cart and return the cart
+        // use the shoppingcartDao to add the cart and return the cart
         return shoppingCartDao.addItem(userId, productId );
     }
 
@@ -74,12 +74,13 @@ public class ShoppingCartController
     @DeleteMapping
     @PreAuthorize("isAuthenticated()")
     public ShoppingCart deleteCart(Principal principal){
+        // get the currently logged in username
         String userName = principal.getName();
+        // find database user by userId
         User user = userDao.getByUserName(userName);
-        if (user == null) {
-            System.out.println("user not found");
-        }
         int userId = user.getId();
+
+        // delete cart and return empty cart
         shoppingCartDao.deleteCart(userId);
         return new ShoppingCart();
     }
