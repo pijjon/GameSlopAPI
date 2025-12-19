@@ -38,21 +38,14 @@ public class ShoppingCartController
     // each method in this controller requires a Principal object as a parameter
     public ShoppingCart getCart(Principal principal)
     {
-        try
-        {
-            // get the currently logged in username
-            String userName = principal.getName();
-            // find database user by userId
-            User user = userDao.getByUserName(userName);
-            int userId = user.getId();
+        // get the currently logged in username
+        String userName = principal.getName();
+        // find database user by userId
+        User user = userDao.getByUserName(userName);
+        int userId = user.getId();
 
-            // use the shoppingcartDao to get all items in the cart and return the cart
-            return shoppingCartDao.getByUserId(userId);
-        }
-        catch(Exception e)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
+        // use the shoppingcartDao to get all items in the cart and return the cart
+        return shoppingCartDao.getByUserId(userId);
     }
 
     // add a POST method to add a product to the cart - the url should be
@@ -60,19 +53,14 @@ public class ShoppingCartController
     @PostMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
     public ShoppingCart addToCart(Principal principal, @PathVariable int productId) {
-        try {
-            // get the currently logged in username
-            String userName = principal.getName();
-            // find database user by userId
-            User user = userDao.getByUserName(userName);
-            int userId = user.getId();
+        // get the currently logged in username
+        String userName = principal.getName();
+        // find database user by userId
+        User user = userDao.getByUserName(userName);
+        int userId = user.getId();
 
-            // use the shoppingcartDao to get all items in the cart and return the cart
-            return shoppingCartDao.addItem(userId, productId );
-        }
-        catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
+        // use the shoppingcartDao to get all items in the cart and return the cart
+        return shoppingCartDao.addItem(userId, productId );
     }
 
     // add a PUT method to update an existing product in the cart - the url should be
