@@ -22,12 +22,13 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     @Override
     public ShoppingCart getByUserId(int userId) {
         String sql = """
-                SELECT * FROM shopping_cart
+                SELECT *
+                FROM shopping_cart
                 JOIN products on products.product_id = shopping_cart.product_id
                 WHERE user_id = ?;
                 """;
 
-        ShoppingCart cart = null;
+        ShoppingCart cart = new ShoppingCart();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
 
@@ -35,7 +36,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
             try (ResultSet row = preparedStatement.executeQuery()) {
                 while (row.next()) {
-                    cart = mapRow(row);
+                    cart.add(mapRow(row));
                 }
             }
         } catch (SQLException e) {
@@ -44,6 +45,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         return cart;
     }
 
+    @Override
     public ShoppingCart addItem(int userId, int productId) {
         String sql = """
                 INSERT INTO shopping_cart (user_id, product_id, quantity)
@@ -104,9 +106,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
 
-    private ShoppingCart mapRow(ResultSet row) throws SQLException {
-        ShoppingCart cart = new ShoppingCart();
-
+    private ShoppingCartItem mapRow(ResultSet row) throws SQLException {
         int productId = row.getInt("product_id");
         int quantity = row.getInt("quantity");
         String name = row.getString("name");
@@ -121,9 +121,8 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         ShoppingCartItem item = new ShoppingCartItem();
         item.setProduct(new Product(productId, name, price, categoryId, description, subCategory, stock, isFeatured, imageUrl));
         item.setQuantity(quantity);
-        cart.add(item);
 
 
-        return cart;
+        return item;
     }
 }
