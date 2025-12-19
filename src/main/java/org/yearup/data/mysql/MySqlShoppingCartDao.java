@@ -15,7 +15,27 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
     @Override
     public ShoppingCart getByUserId(int userId) {
-        return null;
+        String sql = """
+                SELECT * FROM shopping_cart
+                JOIN products on products.product_id = shopping_cart.product_id
+                WHERE user_id = ?;
+                """;
+
+        ShoppingCart cart = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet row = preparedStatement.executeQuery()) {
+                while (row.next()) {
+                    cart = mapRow(row);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Issue querying for user's shopping cart items");
+        }
+        return cart;
     }
 
     private ShoppingCart mapRow(ResultSet row) throws SQLException {
