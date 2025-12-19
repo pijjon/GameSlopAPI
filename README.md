@@ -1,6 +1,3 @@
-Here is a professional `README.md` for the GameSlopAPI project, based on the provided source code.
-
----
 
 # GameSlopAPI - E-Commerce Backend
 
